@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frontend Mentor | Interactive comments section</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap");
+
+        /* Local font (keep your poppins.ttf in same folder) */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('poppim.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+      :root {
+        /* Change --Primary to any HEX color (e.g. #5457b6) and reload the page.
+           The script below will compute related colors automatically. */
+        --Primary: #2267de;
+
+        /* Soft red kept as separate variable for delete / confirm actions */
+        --Soft-Red: #ed6368;
+
+        /* placeholders for computed vars (JS will override these on load) */
+        --Light-grayish-blue: #e8e9fb;
+        --Dark-blue: #222a5a;
+        --Grayish-Blue: #6b728a;
+
+        /* rgb triplet of Primary for subtle shadows (set by JS) */
+        --Primary-rgb: 84,87,182;
+        --White: #ffffff;
+      }
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", "Rubik", sans-serif;
+        font-size: 16px;
+      }
+      p {
+        line-height: 1.5;
+      }
+      /*body {
+        height: 100%;
+        width: 100%;
+        padding-top: 3rem;
+        background-color: var(--Very-light-gray, #f6f7fb);
+      }*/
+      a {
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:hover {
+        filter: saturate(80%);
+      }
+
+      .bu-primary {
+        background-color: var(--Primary);
+        color: var(--White);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+      }
+
+      .bu-cancel {
+        background-color: var(--Soft-Red);
+        color: var(--White);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+      }
+
+      .comment-section {
+        padding: 0 1rem;
+      }
+      .container {
+        border-radius: 8px;
+        padding: 1.5rem;
+        background-color: var(--White);
+      }
+      .comments-wrp {
+        display: flex;
+        flex-direction: column;
+      }
+      .comment-section {
+        max-width: 75ch;
+        margin: auto;
+        margin-top: 1rem;
+      }
+      .comment {
+        margin-bottom: 1rem;
+        display: grid;
+        grid-template-areas:
+          "score user controls"
+          "score comment comment"
+          "score comment comment";
+        grid-template-columns: auto 1fr auto;
+        gap: 1.5rem;
+        row-gap: 1rem;
+        color: var(--Grayish-Blue);
+      }
+
+      .c-score {
+        color: var(--Primary);
+        font-weight: 500;
+        grid-area: score;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0.75rem;
+        padding-top: 0.5rem;
+        width: 1rem;
+        box-sizing: content-box;
+        background-color: var(--Very-light-gray, #f6f7fb);
+        border-radius: 8px;
+        align-self: flex-start;
+      }
+      .score-control {
+        width: 100%;
+        cursor: pointer;
+        object-fit: scale-down;
+      }
+      .c-text {
+        grid-area: comment;
+        width: 100%;
+      }
+      .c-user {
+        width: 100%;
+        grid-area: user;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .usr-name {
+        color: var(--Dark-blue);
+        font-weight: 700;
+      }
+      .usr-img {
+        height: 2rem;
+        width: 2rem;
+      }
+
+      .c-controls {
+        display: flex;
+        gap: 1rem;
+        color: var(--Primary);
+        grid-area: controls;
+        align-self: center;
+        justify-self: flex-end;
+      }
+      .c-controls a {
+        align-items: center;
+      }
+      .edit,
+      .reply {
+        color: var(--Primary);
+      }
+      .edit {
+        display: none;
+      }
+      .delete {
+        color: var(--Soft-Red);
+        display: none;
+      }
+      .control-icon {
+        margin-right: 0.5rem;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .replies {
+        display: flex;
+        margin-left: 2.5rem;
+        padding-left: 2.4rem;
+        border-left: 1px solid var(--Light-grayish-blue);
+      }
+
+      .reply-to {
+        color: var(--Primary);
+        font-weight: 500;
+      }
+
+      .reply-input {
+        display: grid;
+        margin-bottom: 1rem;
+        grid-template-areas: "avatar input button";
+        grid-template-columns: min-content auto min-content;
+        justify-items: center;
+        gap: 1rem;
+        min-height: 9rem;
+      }
+      .reply-input img {
+        grid-area: avatar;
+        height: 2.5rem;
+        width: 2.5rem;
+      }
+      .reply-input .reply-actions {
+        grid-area: button;
+      }
+      .reply-input button {
+        grid-area: button;
+        align-self: flex-start;
+      }
+      .reply-input textarea {
+        grid-area: input;
+        padding: 1rem;
+        width: 100%;
+        border: 1px solid var(--Light-gray, #e9eef6);
+        border-radius: 4px;
+        resize: none;
+      }
+
+      /* Focus state uses computed Primary rgb for subtle theme ring */
+      .reply-input textarea:focus {
+        outline: none;
+        border-color: var(--Primary);
+        box-shadow: 0 0 0 6px rgba(var(--Primary-rgb), 0.08);
+      }
+
+      .this-user .usr-name::after {
+        font-weight: 400;
+        content: "you";
+        color: var(--White);
+        background-color: var(--Primary);
+        padding: 0 0.4rem;
+        padding-bottom: 0.2rem;
+        font-size: 0.8rem;
+        margin-left: 0.5rem;
+        border-radius: 2px;
+      }
+
+      .this-user .reply {
+        display: none;
+      }
+      .this-user .edit,
+      .this-user .delete {
+        display: flex;
+      }
+
+      @media screen and (max-width: 640px) {
+        .container {
+          padding: 0.75rem;
+        }
+        .replies {
+          padding-left: 1rem;
+          margin-left: 0.5rem;
+        }
+        .comment {
+          grid-template-areas:
+            "user user user"
+            "comment comment comment"
+            "score ... controls";
+          gap: 0.5rem;
+        }
+        .c-score {
+          flex-direction: row;
+          width: auto;
+        }
+        .reply-input {
+          grid-template-areas:
+            "input input input"
+            "avatar ... button";
+          grid-template-rows: auto min-content;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .reply-input img {
+          height: 2rem;
+          width: 2rem;
+        }
+        .reply-input textarea {
+          height: 6rem;
+          padding: 0.5rem;
+          align-self: stretch;
+        }
+      }
+
+      .modal-wrp {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
+      .modal {
+        padding: 1.5rem;
+        max-width: 32ch;
+        display: grid;
+        gap: 1rem;
+        grid-template-areas: "heading heading" "body body" "no yes";
+      }
+
+      .invisible {
+        display: none;
+      }
+
+      .modal h3 {
+        grid-area: heading;
+        color: var(--Dark-blue);
+      }
+      .modal button {
+        color: var(--White);
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: none;
+        font-weight: 500;
+      }
+      .modal p {
+        grid-area: body;
+        color: var(--Grayish-Blue);
+        line-height: 1.5;
+      }
+      .modal .yes {
+        grid-area: yes;
+        background-color: var(--Soft-Red);
+      }
+      .modal .no {
+        background-color: var(--Grayish-Blue);
+        grid-area: no;
+      }
+
+      /* SHOW MORE button styling */
+      .show-more {
+        display: inline-block;
+        margin-left: 0.5rem;
+        background: none;
+        border: none;
+        color: var(--Primary);
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.95rem;
+        text-decoration: underline;
+      }
+
+      /* editable box */
+      .c-body-text[contenteditable="true"],
+      .c-body[contenteditable="true"] {
+        display: block;
+        border: 1px solid var(--Light-gray, #e9eef6);
+        padding: 0.6rem;
+        border-radius: 4px;
+        background-color: var(--White);
+        max-height: 4.5em;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.5;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .c-body-text[contenteditable="true"]::-webkit-scrollbar,
+      .c-body[contenteditable="true"]::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      .c-body-text[contenteditable="true"]:focus,
+      .c-body[contenteditable="true"]:focus {
+        outline: none;
+        border-color: var(--Primary);
+        box-shadow: 0 0 0 6px rgba(var(--Primary-rgb), 0.08);
+      }
+
+      .c-body-text[contenteditable="true"]:not(:focus),
+      .c-body[contenteditable="true"]:not(:focus) {
+        border-color: var(--Light-gray, #e9eef6);
+      }
+
+      /* reply actions */
+      .reply-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+        justify-content: flex-start;
+        justify-self: end;
+      }
+      .reply-actions button {
+        min-width: 6rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        border: none;
+      }
+      @media screen and (max-width: 640px) {
+        .reply-actions {
+          flex-direction: row;
+          justify-content: flex-end;
+        }
+        .reply-actions button {
+          flex: 1;
+        }
+      }
+      .reply-actions .bu-primary {
+        align-self: stretch;
+      }
+      .reply-actions .bu-cancel {
+        align-self: stretch;
+      }
+    </style>
+  </head>
+
+  <body>
+    <template class="reply-input-template">
+      <div class="reply-input container">
+        <img src="images/avatars/anonymous.png" alt="" class="usr-img" />
+        <textarea class="cmnt-input" placeholder="Add a comment..."></textarea>
+
+        <div class="reply-actions">
+          <button class="bu-primary" type="button">SEND</button>
+          <button class="bu-cancel" type="button">CANCEL</button>
+        </div>
+      </div>
+    </template>
+
+    <template class="comment-template">
+      <div class="comment-wrp">
+        <div class="comment container">
+          <div class="c-score">
+            <!-- plus uses Light-grayish-blue -->
+            <svg class="score-control score-plus" width="11" height="11" viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+              <path d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" fill="var(--Light-grayish-blue)"/>
+            </svg>
+
+            <p class="score-number">5</p>
+
+            <!-- minus uses Light-grayish-blue -->
+            <svg class="score-control score-minus" width="11" height="3" viewBox="0 0 11 3" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+              <path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" fill="var(--Light-grayish-blue)"/>
+            </svg>
+          </div>
+
+          <div class="c-controls">
+            <a class="delete">
+              <!-- delete uses Soft-Red -->
+              <svg class="control-icon" width="12" height="14" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+                <path d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="var(--Soft-Red)"/>
+              </svg>
+              Delete
+            </a>
+
+            <a class="edit">
+              <!-- edit uses Primary -->
+              <svg class="control-icon" width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+                <path d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="var(--Primary)"/>
+              </svg>
+              <span class="edit-label">Edit</span>
+            </a>
+
+            <a class="reply">
+              <!-- reply uses Primary -->
+              <svg class="control-icon" width="14" height="13" viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+                <path d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="var(--Primary)"/>
+              </svg>
+              Reply
+            </a>
+          </div>
+
+          <div class="c-user">
+            <img src="images/avatars/image-maxblagun.webp" alt="" class="usr-img" />
+            <p class="usr-name">maxblagun</p>
+            <p class="cmnt-at">2 weeks ago</p>
+          </div>
+
+          <p class="c-text">
+            <span class="reply-to"></span>
+            <span class="c-body"></span>
+          </p>
+        </div>
+
+        <div class="replies comments-wrp"></div>
+      </div>
+    </template>
+
+    <main>
+      <div class="comment-section">
+        <div class="comments-wrp"></div>
+
+        <!-- main bottom input (unchanged, no cancel) -->
+        <div class="reply-input container">
+          <img src="images/avatars/anonymous.png" alt="" class="usr-img" />
+          <textarea class="cmnt-input" placeholder="Add a comment..."></textarea>
+          <button class="bu-primary">SEND</button>
+        </div>
+      </div>
+
+      <div class="modal-wrp invisible">
+        <div class="modal container">
+          <h3>Delete comment</h3>
+          <p>Are you sure you want to delete this comment? This will remove the comment and cant be undone</p>
+          <button class="yes">YES,DELETE</button>
+          <button class="no">NO,CANCEL</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- external comment data (unchanged) -->
+    <script src="reviews.js"></script>
+
+    <!-- color-derivation + app JS (app logic kept unchanged apart from new color code) -->
+    <script>
+      /*******************************
+       * Color utilities & derivation
+       *
+       * Behavior:
+       * - Reads --Primary (HEX) from :root
+       * - Converts to HSL, computes derived HSL variants:
+       *   --Light-grayish-blue  => lighter, a bit more saturated, high lightness
+       *   --Dark-blue           => darker, less saturated
+       *   --Grayish-Blue        => low saturation neutral tone
+       * - Writes back CSS variables in HEX and a Primary RGB triplet (--Primary-rgb)
+       *
+       * Changing --Primary in CSS and reloading the page will update derived colors.
+       *******************************/
+
+      function hexToRgb(hex) {
+        if (!hex) return null;
+        hex = hex.replace('#','').trim();
+        if (hex.length === 3) {
+          hex = hex.split('').map(c=>c+c).join('');
+        }
+        const bigint = parseInt(hex, 16);
+        return {
+          r: (bigint >> 16) & 255,
+          g: (bigint >> 8) & 255,
+          b: bigint & 255
+        };
+      }
+
+      function rgbToHex(r,g,b) {
+        return '#' + [r,g,b].map(x => {
+          const s = Math.max(0, Math.min(255, Math.round(x)));
+          return s.toString(16).padStart(2,'0');
+        }).join('');
+      }
+
+      // RGB [0..255] -> HSL {h in degrees [0..360), s,l in [0..1]}
+      function rgbToHsl(r,g,b) {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r,g,b), min = Math.min(r,g,b);
+        let h=0, s=0, l=(max+min)/2;
+        if (max !== min) {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch(max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h *= 60;
+        }
+        return { h, s, l };
+      }
+
+      // H in degrees, s,l in [0..1] -> rgb [0..255]
+      function hslToRgb(h, s, l) {
+        h = ((h % 360) + 360) % 360;
+        if (s === 0) {
+          const c = Math.round(l * 255);
+          return { r: c, g: c, b: c };
+        }
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        const hk = h / 360;
+        const t = x => {
+          let tx = hk + x;
+          if (tx < 0) tx += 1;
+          if (tx > 1) tx -= 1;
+          if (tx < 1/6) return p + (q - p) * 6 * tx;
+          if (tx < 1/2) return q;
+          if (tx < 2/3) return p + (q - p) * (2/3 - tx) * 6;
+          return p;
+        };
+        return {
+          r: Math.round(t(1/3) * 255),
+          g: Math.round(t(0) * 255),
+          b: Math.round(t(-1/3) * 255)
+        };
+      }
+
+      function clamp01(v){ return Math.min(1, Math.max(0, v)); }
+
+      function computeDerivedColors(primaryHex) {
+        const rgb = hexToRgb(primaryHex);
+        if (!rgb) return;
+        const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+        const h = hsl.h; // degrees
+        const s = hsl.s;
+        const l = hsl.l;
+
+        // Light grayish blue: lighter and slightly more saturated
+        const lightS = clamp01(s * 1.425);
+        const lightL = Math.min(0.95, l + 0.33);
+        const lightRgb = hslToRgb(h, lightS, lightL);
+        const lightHex = rgbToHex(lightRgb.r, lightRgb.g, lightRgb.b);
+
+        // Dark blue: darker and less saturated
+        const darkS = clamp01(s * 0.6);
+        const darkL = Math.max(0.06, l * 0.45); // ensure visible contrast
+        const darkRgb = hslToRgb(h, darkS, darkL);
+        const darkHex = rgbToHex(darkRgb.r, darkRgb.g, darkRgb.b);
+
+        // Grayish blue: low saturation neutral tone around mid-dark lightness
+        const grayS = clamp01(s * 0.25);
+        const grayL = 0.45;
+        const grayRgb = hslToRgb(h, grayS, grayL);
+        const grayHex = rgbToHex(grayRgb.r, grayRgb.g, grayRgb.b);
+
+        // Primary rgb triplet for subtle shadows
+        const primaryRgbTriplet = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
+
+        return {
+          lightHex,
+          darkHex,
+          grayHex,
+          primaryRgbTriplet
+        };
+      }
+
+      // apply computed colors to CSS variables
+      function applyDerivedColors() {
+        const root = getComputedStyle(document.documentElement);
+        const primaryHex = root.getPropertyValue('--Primary').trim() || '#5457b6';
+        const derived = computeDerivedColors(primaryHex);
+        if (!derived) return;
+        document.documentElement.style.setProperty('--Light-grayish-blue', derived.lightHex);
+        document.documentElement.style.setProperty('--Dark-blue', derived.darkHex);
+        document.documentElement.style.setProperty('--Grayish-Blue', derived.grayHex);
+        document.documentElement.style.setProperty('--Primary-rgb', derived.primaryRgbTriplet);
+      }
+
+      // run derivation on DOM ready
+      document.addEventListener('DOMContentLoaded', () => {
+        applyDerivedColors();
+      });
+
+      /*******************************
+       * --- application JS (unchanged original logic) ---
+       *******************************/
+
+      function appendFrag(frag, parent) {
+        var children = [].slice.call(frag.childNodes, 0);
+        parent.appendChild(frag);
+        return children[1];
+      }
+
+      // maximum characters before truncation
+      const MAX_COMMENT_CHARS = 200;
+
+      function renderCommentBody(cBodyElem, fullText) {
+        cBodyElem.innerHTML = "";
+
+        const textSpan = document.createElement("span");
+        textSpan.className = "c-body-text";
+
+        if (fullText.length <= MAX_COMMENT_CHARS) {
+          textSpan.textContent = fullText;
+          cBodyElem.appendChild(textSpan);
+          return;
+        }
+
+        const shortText = fullText.slice(0, MAX_COMMENT_CHARS);
+        textSpan.textContent = shortText + "...";
+        cBodyElem.appendChild(textSpan);
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "show-more";
+        btn.textContent = "Show more";
+
+        let expanded = false;
+        btn.addEventListener("click", () => {
+          if (!expanded) {
+            textSpan.textContent = fullText;
+            btn.textContent = "Show less";
+            expanded = true;
+          } else {
+            textSpan.textContent = shortText + "...";
+            btn.textContent = "Show more";
+            expanded = false;
+          }
+        });
+
+        cBodyElem.appendChild(btn);
+      }
+
+      const addComment = (body, parentId, replyTo = undefined) => {
+        let commentParent =
+          parentId === 0
+            ? data.comments
+            : data.comments.filter((c) => c.id == parentId)[0].replies;
+        let newComment = {
+          parent: parentId,
+          id:
+            commentParent.length == 0
+              ? 1
+              : commentParent[commentParent.length - 1].id + 1,
+          content: body,
+          createdAt: "Now",
+          replyingTo: replyTo,
+          score: 0,
+          replies: parentId == 0 ? [] : undefined,
+          user: data.currentUser,
+        };
+        commentParent.push(newComment);
+        initComments();
+      };
+
+      const deleteComment = (commentObject) => {
+        if (commentObject.parent == 0) {
+          data.comments = data.comments.filter((e) => e != commentObject);
+        } else {
+          data.comments.filter((e) => e.id === commentObject.parent)[0].replies =
+            data.comments
+              .filter((e) => e.id === commentObject.parent)[0]
+              .replies.filter((e) => e != commentObject);
+        }
+        initComments();
+      };
+
+      const promptDel = (commentObject) => {
+        const modalWrp = document.querySelector(".modal-wrp");
+        modalWrp.classList.remove("invisible");
+        const yesBtn = modalWrp.querySelector(".yes");
+        const noBtn = modalWrp.querySelector(".no");
+
+        const yesClone = yesBtn.cloneNode(true);
+        yesBtn.parentNode.replaceChild(yesClone, yesBtn);
+        const noClone = noBtn.cloneNode(true);
+        noBtn.parentNode.replaceChild(noClone, noBtn);
+
+        modalWrp.querySelector(".yes").addEventListener("click", () => {
+          deleteComment(commentObject);
+          modalWrp.classList.add("invisible");
+        });
+        modalWrp.querySelector(".no").addEventListener("click", () => {
+          modalWrp.classList.add("invisible");
+        });
+      };
+
+      const spawnReplyInput = (parent, parentId, replyTo = undefined) => {
+        if (parent.querySelectorAll(".reply-input")) {
+          parent.querySelectorAll(".reply-input").forEach((e) => {
+            e.remove();
+          });
+        }
+        const inputTemplate = document.querySelector(".reply-input-template");
+        const inputNode = inputTemplate.content.cloneNode(true);
+        const addedInput = appendFrag(inputNode, parent);
+
+        const sendBtn = addedInput.querySelector(".bu-primary");
+        sendBtn.addEventListener("click", () => {
+          let commentBody = addedInput.querySelector(".cmnt-input").value;
+          if (commentBody.length == 0) return;
+          addComment(commentBody, parentId, replyTo);
+        });
+
+        const cancelBtn = addedInput.querySelector(".bu-cancel");
+        if (cancelBtn) {
+          cancelBtn.addEventListener("click", () => {
+            addedInput.remove();
+          });
+        }
+
+        const ta = addedInput.querySelector(".cmnt-input");
+        if (ta) ta.focus();
+      };
+
+      const createCommentNode = (commentObject) => {
+        const commentTemplate = document.querySelector(".comment-template");
+        var commentNode = commentTemplate.content.cloneNode(true);
+        commentNode.querySelector(".usr-name").textContent =
+          commentObject.user.username;
+        commentNode.querySelector(".usr-img").src = commentObject.user.image.webp;
+        commentNode.querySelector(".score-number").textContent =
+          commentObject.score;
+        commentNode.querySelector(".cmnt-at").textContent =
+          commentObject.createdAt;
+
+        const cBodyElem = commentNode.querySelector(".c-body");
+        const fullText = commentObject.content || "";
+        if (commentObject.replyingTo)
+          commentNode.querySelector(".reply-to").textContent =
+            "@" + commentObject.replyingTo;
+        renderCommentBody(cBodyElem, fullText);
+
+        commentNode.querySelector(".score-plus").addEventListener("click", () => {
+          commentObject.score++;
+          initComments();
+        });
+
+        commentNode
+          .querySelector(".score-minus")
+          .addEventListener("click", () => {
+            commentObject.score--;
+            if (commentObject.score < 0) commentObject.score = 0;
+            initComments();
+          });
+        if (commentObject.user.username == data.currentUser.username) {
+          commentNode.querySelector(".comment").classList.add("this-user");
+          commentNode.querySelector(".delete").addEventListener("click", () => {
+            promptDel(commentObject);
+          });
+
+          const editLink = commentNode.querySelector(".edit");
+          const editLabel = editLink.querySelector(".edit-label");
+
+          editLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            const wrapper = e.target.closest(".comment-wrp");
+            if (!wrapper) return;
+            const textSpan = wrapper.querySelector(".c-body-text");
+            const editableTarget = textSpan ? textSpan : wrapper.querySelector(".c-body");
+
+            if (editLabel && editLabel.textContent.trim().toLowerCase() === "edit") {
+              editableTarget.setAttribute("contenteditable", true);
+              editableTarget.focus();
+              document.execCommand("selectAll", false, null);
+              document.getSelection().collapseToEnd();
+              editLabel.textContent = "Done";
+            } else {
+              if (editableTarget.getAttribute("contenteditable")) {
+                editableTarget.removeAttribute("contenteditable");
+              }
+              const newText = editableTarget.textContent || "";
+              commentObject.content = newText;
+              if (editLabel) editLabel.textContent = "Edit";
+              initComments();
+            }
+          });
+
+          return commentNode;
+        }
+        return commentNode;
+      };
+
+      const appendComment = (parentNode, commentNode, parentId) => {
+        const bu_reply = commentNode.querySelector(".reply");
+        const appendedCmnt = appendFrag(commentNode, parentNode);
+        const replyTo = appendedCmnt.querySelector(".usr-name").textContent;
+        bu_reply.addEventListener("click", () => {
+          if (parentNode.classList.contains("replies")) {
+            spawnReplyInput(parentNode, parentId, replyTo);
+          } else {
+            spawnReplyInput(
+              appendedCmnt.querySelector(".replies"),
+              parentId,
+              replyTo
+            );
+          }
+        });
+      };
+
+      function initComments(
+        commentList = data.comments,
+        parent = document.querySelector(".comments-wrp")
+      ) {
+        parent.innerHTML = "";
+        commentList.forEach((element) => {
+          var parentId = element.parent == 0 ? element.id : element.parent;
+          const comment_node = createCommentNode(element);
+          if (element.replies && element.replies.length > 0) {
+            initComments(element.replies, comment_node.querySelector(".replies"));
+          }
+          appendComment(parent, comment_node, parentId);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        // ensure derived colors are applied before rendering comments
+        applyDerivedColors();
+        initComments();
+      });
+
+      // main bottom input send behavior
+      // (note: query until DOMContentLoaded ensures node exists)
+      document.addEventListener('DOMContentLoaded', () => {
+        const cmntInput = document.querySelector(".reply-input");
+        if (cmntInput) {
+          const send = cmntInput.querySelector(".bu-primary");
+          if (send) {
+            send.addEventListener("click", () => {
+              let commentBody = cmntInput.querySelector(".cmnt-input").value;
+              if (commentBody.length == 0) return;
+              addComment(commentBody, 0);
+              cmntInput.querySelector(".cmnt-input").value = "";
+            });
+          }
+        }
+      });
+    </script>
+    <script>
+      function sendHeightToParent() {
+        const doc = document.documentElement;
+        const body = document.body;
+        const height = Math.max(
+          doc.scrollHeight,
+          body.scrollHeight,
+          doc.offsetHeight,
+          body.offsetHeight,
+          doc.clientHeight
+        );
+        // send object message so parent can validate type safely
+        parent.postMessage({ type: 'embed-height', height: Math.ceil(height) }, '*');
+      }
+
+      // 1) send initial height once DOM is loaded
+      window.addEventListener('load', () => {
+        sendHeightToParent();
+        // small timeout for images/fonts/etc
+        setTimeout(sendHeightToParent, 250);
+      });
+
+      // 2) observe size changes (ResizeObserver is modern and efficient)
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(() => {
+          sendHeightToParent();
+        });
+        ro.observe(document.documentElement);
+        ro.observe(document.body);
+      } else {
+        // fallback: MutationObserver & periodic check
+        const mo = new MutationObserver(() => sendHeightToParent());
+        mo.observe(document, { childList: true, subtree: true, attributes: true, characterData: true });
+        setInterval(sendHeightToParent, 500);
+      }
+
+      // Example dynamic change to demonstrate auto-resize:
+      setTimeout(() => {
+        const more = document.getElementById('more');
+        more.innerHTML = '<p>Loaded additional content after 2s to show auto-resize.</p>'.repeat(6);
+        // sendHeightToParent(); // ResizeObserver / MutationObserver will pick this up
+      }, 2000);
+    </script>
+</body>
+</html>
