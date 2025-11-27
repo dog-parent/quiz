@@ -19,7 +19,7 @@ const data = {
           png: "./images/avatars/profile1.png",
           webp: "./images/avatars/profile1.png"
         },
-        username: "Martha Louise Bennett"
+        username: "Martha L. Bennett"
       },
       replies: [
         {
@@ -728,3 +728,4 @@ const data = {
     },
   ]
 };
+
