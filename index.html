@@ -942,59 +942,6 @@ function applyAnswerPlaceholders(raw) {
 }
 /* ====== END SESSION HELPERS ====== */
 
-/* ====== EMBED: iframe auto-size parent logic (inserted) ====== */
-const EMBED_SETTINGS = {
-  autoHeight: true,
-  autoWidth: false,
-  fixedHeight: '600px',
-  fixedWidth: '600px',
-};
-
-const theFrame = document.getElementById('theFrame');
-
-function applyFixedDimensions() {
-  if (!theFrame) return;
-  if (!EMBED_SETTINGS.autoHeight) theFrame.style.height = EMBED_SETTINGS.fixedHeight;
-  if (!EMBED_SETTINGS.autoWidth) theFrame.style.width = EMBED_SETTINGS.fixedWidth;
-}
-applyFixedDimensions();
-
-window.addEventListener('message', (ev) => {
-  if (!ev.data || typeof ev.data !== 'object') return;
-  if (ev.data.type === 'embed-height' && typeof ev.data.height === 'number') {
-    if (EMBED_SETTINGS.autoHeight && theFrame) {
-      theFrame.style.height = ev.data.height + 'px';
-    }
-  }
-  if (ev.data.type === 'embed-width' && typeof ev.data.width === 'number') {
-    if (EMBED_SETTINGS.autoWidth && theFrame) {
-      theFrame.style.width = ev.data.width + 'px';
-    }
-  }
-}, false);
-
-// fallback: if same-origin and autoHeight true, try to measure after load
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    if (!theFrame || !EMBED_SETTINGS.autoHeight) return;
-    try {
-      const doc = theFrame.contentDocument || theFrame.contentWindow.document;
-      if (doc) {
-        const h = Math.max(
-          doc.documentElement.scrollHeight,
-          doc.body.scrollHeight,
-          doc.documentElement.offsetHeight,
-          doc.body.offsetHeight
-        );
-        if (h) theFrame.style.height = h + 'px';
-      }
-    } catch (e) {
-      // cross-origin access not allowed; rely on postMessage from child
-    }
-  }, 200);
-});
-/* ====== END EMBED ====== */
-
 let currentVimeoPlayer = null;
 let mediaInstance = null;
 
@@ -2369,3 +2316,4 @@ loadQuestion(currentQuestionIndex);
 </script>
 </body>
 </html>
+
