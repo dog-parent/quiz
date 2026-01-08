@@ -11,7 +11,7 @@ const surveyConfig = {
     question: "1.15em",
     description: "0.95em",
     answers: "1em",
-    input: "1em",
+    input: "16pxm",
     inputLabel: "0.9em",
     comment: "0.95em",
     btnMain: "1.02em",
@@ -461,6 +461,7 @@ const questions = [
     ]
   }
 ]
+
 
 
 
