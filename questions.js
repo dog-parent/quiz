@@ -24,7 +24,6 @@ const surveyConfig = {
 
 
 
-const questions = [
 
   // {
   //   media: { type: "image", src: "img/banner.jpg" },
@@ -32,6 +31,7 @@ const questions = [
   //   description: "It only takes small unnoticed habits to make even the most caring dog parent a silent cause of their pet’s discomfort, inhibited quality and longevity of life. This quick 2-minute quiz helps you uncover if you’ve been missing the warning signs, and shows you the exact ways to fix them. Trusted by over 150,000 pet lovers, backed by expert insight, and loved for its honest results. Begin your test now and discover the truth every dog owner needs to know.",
   //   "mainButtonText": "Start the Quiz Now"
   // },
+const questions = [
 
   // ---------- INTRODUCTORY QUESTIONS (personalization keys saved) ----------
   {
@@ -461,6 +461,7 @@ const questions = [
     ]
   }
 ]
+
 
 
 
