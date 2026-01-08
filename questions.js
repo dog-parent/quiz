@@ -8,12 +8,12 @@ const surveyConfig = {
   completionHref: "https://homedoctorbook.com/book/#aff=twenty-five/",    // last-question CTA link
 
   fontSizes: {
-    // question: "1.15em",
-    // description: "0.95em",
-    // answers: "1em",
-    // input: "1em",
-    // inputLabel: "0.9em",
-    // comment: "0.95em",
+    question: "1.15em",
+    description: "0.95em",
+    answers: "1em",
+    input: "1em",
+    inputLabel: "0.9em",
+    comment: "0.95em",
     btnMain: "1.02em",
     btnSub: "0.6em",
     disclaimer: "10px",
@@ -26,12 +26,12 @@ const surveyConfig = {
 
 const questions = [
 
-  {
-    media: { type: "image", src: "img/banner.jpg" },
-    question: "[color=#eb4034][size=18px][i]Question 1 of 9[/i][/size][/color]\n\nMost Dog Parents Miss the Silent Signs of Their Pet’s Suffering; Take This 2-Minute Quiz to See If You’re One of Them.",
-    description: "It only takes small unnoticed habits to make even the most caring dog parent a silent cause of their pet’s discomfort, inhibited quality and longevity of life. This quick 2-minute quiz helps you uncover if you’ve been missing the warning signs, and shows you the exact ways to fix them. Trusted by over 150,000 pet lovers, backed by expert insight, and loved for its honest results. Begin your test now and discover the truth every dog owner needs to know.",
-    "mainButtonText": "Start the Quiz Now"
-  },
+  // {
+  //   media: { type: "image", src: "img/banner.jpg" },
+  //   question: "[color=#eb4034][size=18px][i]Question 1 of 9[/i][/size][/color]\n\nMost Dog Parents Miss the Silent Signs of Their Pet’s Suffering; Take This 2-Minute Quiz to See If You’re One of Them.",
+  //   description: "It only takes small unnoticed habits to make even the most caring dog parent a silent cause of their pet’s discomfort, inhibited quality and longevity of life. This quick 2-minute quiz helps you uncover if you’ve been missing the warning signs, and shows you the exact ways to fix them. Trusted by over 150,000 pet lovers, backed by expert insight, and loved for its honest results. Begin your test now and discover the truth every dog owner needs to know.",
+  //   "mainButtonText": "Start the Quiz Now"
+  // },
 
   // ---------- INTRODUCTORY QUESTIONS (personalization keys saved) ----------
   {
@@ -461,5 +461,6 @@ const questions = [
     ]
   }
 ]
+
 
 
