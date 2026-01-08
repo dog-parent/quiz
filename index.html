@@ -97,30 +97,23 @@
 
   }
 
-  /* --- RESPONSIVE SAFETY HELPERS --- */
-  /* predictable sizing and prevent automatic text-size-adjust on mobile */
-  *,
-  *::before,
-  *::after { box-sizing: border-box; }
-  html, body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; text-size-adjust: 100%; }
-
   /* Make sizing predictable and ensure media never overflow */
   *, *::before, *::after { box-sizing: border-box; }
   img, picture, video, iframe { max-width: 105%; height: auto; display: block; }
 
   /* ensure body fills viewport for sticky footer to work */
-html, body { height: 100%; }
-html { font-family: var(--app-font-family); }
-body {
-  background: var(--body-bg);
-  color: var(--text-color-secondary);
-  margin: 0;
-  padding: 14px 12px;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 60px;
-}
-
+  html, body { height: 100%; }
+  html { font-family: var(--app-font-family); }
+  body {
+    background: var(--body-bg);
+    color: var(--text-color-secondary);
+    margin: 0;
+    padding: 14px 12px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 60px;
+    /* keep same visual centering but avoid horizontal overflow on small screens */
+  }
 
   /* ===== Force primary app font onto all form controls and buttons ===== */
   input,
@@ -151,7 +144,7 @@ body {
     width:min(600px, 100%); max-width:100%; background: var(--card-bg);; border-radius: var(--card-radius);
     padding:20px 10px 5px 10px; box-sizing:border-box; box-shadow: var(--card-shadow);
     display:flex; flex-direction:column; gap:12px; place-self: start center;
-    flex: 0 0 auto;  margin: 28px auto 0 auto;
+    flex: 0 0 auto; margin: 50px 15px 10px 15px;
   }
 
   /* IMAGE (fallback) */
@@ -258,55 +251,19 @@ body {
   .input-wrapper.error { border-color: var(--error-color); background: var(--error-light); }
   .comment.error { background: var(--error-light); color: var(--error-color); display:block; }
 
-.input-wrapper{
-  position:relative;
-  display:flex;
-  align-items:center;
-
-  /* enable shrinking and avoid overflow on narrow screens */
-  min-width: 0;
-  width: 100%;
-  padding: 10px 15px;
-  border-radius: var(--radius);
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-}
-
-.input-wrapper input{
-  flex:1;
-  border:none;
-  outline:none;
-  background:transparent;
-  font-size:var(--fs-input);
-  color:var(--text-color-secondary);
-  font-style: normal;
-  font-weight: normal;
-  font-family: var(--app-font-family) !important;
-
-  /* allow input to shrink inside flex */
-  min-width: 0;
-  line-height: 1.2;
-}
-
+  .input-wrapper{ position:relative; display:flex; align-items:center; }
+  .input-wrapper input{
+    flex:1; border:none; outline:none; background:transparent; font-size:var(--fs-input); color:var(--text-color-secondary);
+    font-style: normal; font-weight: normal; font-family: var(--app-font-family) !important;
+  }
   .input-wrapper input::placeholder{ font-style:italic; color:var(--placeholder-color); font-family: var(--app-font-family) !important;}
   .input-wrapper.locked input{ font-weight:var(--btn-font-weight); color:var(--text-color-primary); }
 
-.input-wrapper button{
-  display:none;
-  position:absolute;
-  right:8px;
-  box-sizing: border-box;
-  background: var(--primary-color);
-  font-weight: 600;
-  color: #fff;
-  border: none;
-  padding: 5px 8px;
-  border-radius: calc(var(--radius) / 1.5);
-  font-size: 0.85em;
-  cursor: pointer;
-  font-family: var(--app-font-family) !important;
-}
-
+  .input-wrapper button{
+    display:none; position:absolute; right:8px; background:var(--primary-color); font-weight: 600;
+    color:#fff; border:none; padding:5px 8px; border-radius:calc(var(--radius) / 1.5); font-size:0.85em; 
+    cursor:pointer; font-family: var(--app-font-family) !important; 
+  }
 
   /* COMMENT tweaks: remove extraneous spacing below text, set snug line-height */
   .comment{
@@ -350,34 +307,7 @@ body {
   .survey-footer .disclaimer { font-size: var(--fs-disclaimer); line-height:1.1; margin-bottom: -25px; color: var(--footer-color); }
   .survey-footer .copyright { font-size: var(--fs-copyright); color: var(--footer-color); margin-bottom: 5px;}
 
-  /* @media (max-width:480px){ .question{ font-size: calc(var(--fs-question) - .08em); } } */
-  /* Prevent iOS/Android auto-zoom on input focus by keeping input font-size >= 16px */
-@media (max-width: 480px) {
-  .question{ font-size: calc(var(--fs-question) - .08em); }
-  input, textarea, select {
-    font-size: 16px !important;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-  }
-
-  :root {
-    --radius: 8px;
-    --fs-question: 1.02em;
-    --fs-desc: 0.9em;
-    --fs-answer: 0.95em;
-    --fs-input: 0.95em;
-    --fs-btn-main: 0.98em;
-    --fs-btn-sub: 0.7em;
-    --disclaimer-font-size: 10px;
-    --footer-max-width: 100%;
-  }
-
-  .survey-card { padding: 14px; margin: 18px 12px 0 12px; width: calc(100% - 24px); }
-  .options { gap: 8px; }
-  .question-desc { margin-bottom: 0; }
-  .next-btn { padding: 11px 12px; font-size: var(--fs-btn-main); }
-}
-
+  @media (max-width:480px){ .question{ font-size: calc(var(--fs-question) - .08em); } }
 
   /* ===== embedded iframe styles (from external embed doc) ===== */
   #iframeEmbedHeading { margin: 20px 0 0px; font-weight:700; font-size:1.3em; color:var(--text-color-primary); 
@@ -1013,56 +943,56 @@ function applyAnswerPlaceholders(raw) {
 /* ====== END SESSION HELPERS ====== */
 
 /* ====== EMBED: iframe auto-size parent logic (inserted) ====== */
-// const EMBED_SETTINGS = {
-//   autoHeight: true,
-//   autoWidth: false,
-//   fixedHeight: '600px',
-//   fixedWidth: '600px',
-// };
+const EMBED_SETTINGS = {
+  autoHeight: true,
+  autoWidth: false,
+  fixedHeight: '600px',
+  fixedWidth: '600px',
+};
 
-// const theFrame = document.getElementById('theFrame');
+const theFrame = document.getElementById('theFrame');
 
-// function applyFixedDimensions() {
-//   if (!theFrame) return;
-//   if (!EMBED_SETTINGS.autoHeight) theFrame.style.height = EMBED_SETTINGS.fixedHeight;
-//   if (!EMBED_SETTINGS.autoWidth) theFrame.style.width = EMBED_SETTINGS.fixedWidth;
-// }
-// applyFixedDimensions();
+function applyFixedDimensions() {
+  if (!theFrame) return;
+  if (!EMBED_SETTINGS.autoHeight) theFrame.style.height = EMBED_SETTINGS.fixedHeight;
+  if (!EMBED_SETTINGS.autoWidth) theFrame.style.width = EMBED_SETTINGS.fixedWidth;
+}
+applyFixedDimensions();
 
-// window.addEventListener('message', (ev) => {
-//   if (!ev.data || typeof ev.data !== 'object') return;
-//   if (ev.data.type === 'embed-height' && typeof ev.data.height === 'number') {
-//     if (EMBED_SETTINGS.autoHeight && theFrame) {
-//       theFrame.style.height = ev.data.height + 'px';
-//     }
-//   }
-//   if (ev.data.type === 'embed-width' && typeof ev.data.width === 'number') {
-//     if (EMBED_SETTINGS.autoWidth && theFrame) {
-//       theFrame.style.width = ev.data.width + 'px';
-//     }
-//   }
-// }, false);
+window.addEventListener('message', (ev) => {
+  if (!ev.data || typeof ev.data !== 'object') return;
+  if (ev.data.type === 'embed-height' && typeof ev.data.height === 'number') {
+    if (EMBED_SETTINGS.autoHeight && theFrame) {
+      theFrame.style.height = ev.data.height + 'px';
+    }
+  }
+  if (ev.data.type === 'embed-width' && typeof ev.data.width === 'number') {
+    if (EMBED_SETTINGS.autoWidth && theFrame) {
+      theFrame.style.width = ev.data.width + 'px';
+    }
+  }
+}, false);
 
-// // fallback: if same-origin and autoHeight true, try to measure after load
-// window.addEventListener('load', () => {
-//   setTimeout(() => {
-//     if (!theFrame || !EMBED_SETTINGS.autoHeight) return;
-//     try {
-//       const doc = theFrame.contentDocument || theFrame.contentWindow.document;
-//       if (doc) {
-//         const h = Math.max(
-//           doc.documentElement.scrollHeight,
-//           doc.body.scrollHeight,
-//           doc.documentElement.offsetHeight,
-//           doc.body.offsetHeight
-//         );
-//         if (h) theFrame.style.height = h + 'px';
-//       }
-//     } catch (e) {
-//       // cross-origin access not allowed; rely on postMessage from child
-//     }
-//   }, 200);
-// });
+// fallback: if same-origin and autoHeight true, try to measure after load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (!theFrame || !EMBED_SETTINGS.autoHeight) return;
+    try {
+      const doc = theFrame.contentDocument || theFrame.contentWindow.document;
+      if (doc) {
+        const h = Math.max(
+          doc.documentElement.scrollHeight,
+          doc.body.scrollHeight,
+          doc.documentElement.offsetHeight,
+          doc.body.offsetHeight
+        );
+        if (h) theFrame.style.height = h + 'px';
+      }
+    } catch (e) {
+      // cross-origin access not allowed; rely on postMessage from child
+    }
+  }, 200);
+});
 /* ====== END EMBED ====== */
 
 let currentVimeoPlayer = null;
@@ -2439,4 +2369,3 @@ loadQuestion(currentQuestionIndex);
 </script>
 </body>
 </html>
-
