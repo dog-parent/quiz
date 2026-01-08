@@ -198,12 +198,12 @@
 }
 
 /* Inline iframe (hidden until play) */
-.inline-iframe {
+/* .inline-iframe {
   width: 100%;
   height: 100%;
   border: 0;
   display: none;
-}
+} */
 
 /* Reuse poster-play visual (slightly adapted for inline) */
 .inline-poster-play, .poster-play {
@@ -230,9 +230,9 @@
 }
 
 /* ensure inline media inherit same card radius variable and sizing */
-.inline-media, .inline-video-wrapper, .inline-image, .inline-poster, .inline-iframe {
+/* .inline-media, .inline-video-wrapper, .inline-image, .inline-poster, .inline-iframe {
   border-radius: var(--card-radius, 6px);
-}
+} */
 
   .options{ display:flex; flex-direction:column; gap:10px; }
 
@@ -310,15 +310,15 @@
   @media (max-width:480px){ .question{ font-size: calc(var(--fs-question) - .08em); } }
 
   /* ===== embedded iframe styles (from external embed doc) ===== */
-  #iframeEmbedHeading { margin: 20px 0 -45px 0; font-weight:700; font-size:1.3em; color:var(--text-color-primary); 
-                        flex-direction:column; gap:0px; place-self: start center;}
-  #theFrame {
+  /* #iframeEmbedHeading { margin: 20px 0 -45px 0; font-weight:700; font-size:1.3em; color:var(--text-color-primary); 
+                        flex-direction:column; gap:0px; place-self: start center;} */
+  /* #theFrame {
     display: block;
     border: 0;
     overflow: hidden;
     width: 100%; flex-direction:column; place-self: start center;
     transition: height 0.25s ease, width 0.25s ease;
-  }
+  } */
 
 </style>
 </head>
@@ -343,7 +343,7 @@
 </div>
 
 <h2 id="iframeEmbedHeading">Comments Section</h2>
-<iframe id="theFrame" src="page.html" title="embedded page"></iframe>
+<!-- <iframe id="theFrame" src="page.html" title="embedded page"></iframe> -->
 
 <div class="survey-footer" aria-hidden="false">
   <div id="surveyDisclaimer" class="disclaimer" aria-hidden="true"></div>
@@ -2316,4 +2316,5 @@ loadQuestion(currentQuestionIndex);
 </script>
 </body>
 </html>
+
 
