@@ -8,12 +8,12 @@ const surveyConfig = {
   completionHref: "https://homedoctorbook.com/book/#aff=twenty-five/",    // last-question CTA link
 
   fontSizes: {
-    question: "1.15em",
-    description: "0.95em",
-    answers: "1em",
-    input: "1em",
-    inputLabel: "0.9em",
-    comment: "0.95em",
+    // question: "1.15em",
+    // description: "0.95em",
+    // answers: "1em",
+    // input: "1em",
+    // inputLabel: "0.9em",
+    // comment: "0.95em",
     btnMain: "1.02em",
     btnSub: "0.6em",
     disclaimer: "10px",
@@ -461,4 +461,5 @@ const questions = [
     ]
   }
 ]
+
 
