@@ -237,8 +237,12 @@
 
   .options{ display:flex; flex-direction:column; gap:10px; }
 
-  .option-btn, .input-wrapper{
+  .input-wrapper{
     padding:10px 15px; border-radius:var(--radius); border:1px solid var(--input-border);
+    background:var(--input-bg); transition:all .18s ease; color:var(--text-color-secondary); font-size:var(--fs-answer);
+  }
+  .option-btn{
+    padding:12px 15px; border-radius:var(--radius); border:1px solid var(--input-border);
     background:var(--input-bg); transition:all .18s ease; color:var(--text-color-secondary); font-size:var(--fs-answer);
   }
 
@@ -2370,3 +2374,4 @@ loadQuestion(currentQuestionIndex);
 </script>
 </body>
 </html>
+
