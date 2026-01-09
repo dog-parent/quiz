@@ -10,10 +10,10 @@ const surveyConfig = {
   fontSizes: {
     question: "16.32px",
     description: "14px",
-    answers: "16px",
-    input: "17px",
+    answers: "14px",
+    input: "14.4px",
     inputLabel: "14.4px",
-    comment: "15.2px",
+    comment: "14px",
     btnMain: "16.32px",
     btnSub: "9.6px",
     disclaimer: "10px",
@@ -59,3 +59,4 @@ const questions = [
     completionHref: "http://pawbiotix24.com/text.php#aff=twenty-five"
     }
 ]
+
