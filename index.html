@@ -237,12 +237,8 @@
 
   .options{ display:flex; flex-direction:column; gap:10px; }
 
-  .input-wrapper{
+  .option-btn, .input-wrapper{
     padding:10px 15px; border-radius:var(--radius); border:1px solid var(--input-border);
-    background:var(--input-bg); transition:all .18s ease; color:var(--text-color-secondary); font-size:var(--fs-answer);
-  }
-  .option-btn{
-    padding:12px 15px; border-radius:var(--radius); border:1px solid var(--input-border);
     background:var(--input-bg); transition:all .18s ease; color:var(--text-color-secondary); font-size:var(--fs-answer);
   }
 
@@ -282,7 +278,7 @@
 
   /* Next button base + disabled-class for 'disabled' mode */
   .next-btn{
-    display:none; width:100%; padding:12.5px 15px; border-radius:var(--radius); border:none;
+    display:none; width:100%; padding:13.5px 15px; border-radius:var(--radius); border:none;
     background:var(--primary-color); color:#fff; cursor:pointer; font-size:var(--fs-btn-main);
     font-weight: var(--btn-font-weight); line-height: var(--btn-line-height); text-align:center;
     display:flex; flex-direction:column; gap:2px; align-items:center; justify-content:center;
@@ -2374,4 +2370,5 @@ loadQuestion(currentQuestionIndex);
 </script>
 </body>
 </html>
+
 
