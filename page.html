@@ -8,19 +8,19 @@
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap");
 
-        /* Local font (keep your poppins.ttf in same folder) */
-        @font-face {
-            font-family: 'Poppins';
-            src: url('poppim.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
+      /* Local font (keep your poppins.ttf in same folder) */
+      @font-face {
+          font-family: 'Poppins';
+          src: url('poppim.ttf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
+      }
 
       :root {
         /* Change --Primary to any HEX color (e.g. #5457b6) and reload the page.
            The script below will compute related colors automatically. */
-        --Primary: #2267de;
+        --Primary: #5457b6;
 
         /* Soft red kept as separate variable for delete / confirm actions */
         --Soft-Red: #ed6368;
@@ -39,18 +39,18 @@
         padding: 0;
         margin: 0;
         box-sizing: border-box;
-        font-family: "Poppins", "Rubik", sans-serif;
+        font-family: "Rubik", sans-serif;
         font-size: 14px;
       }
       p {
         line-height: 1.5;
       }
-      /*body {
+      /* body {
         height: 100%;
         width: 100%;
         padding-top: 3rem;
         background-color: var(--Very-light-gray, #f6f7fb);
-      }*/
+      } */
       a {
         cursor: pointer;
         text-decoration: none;
@@ -94,7 +94,8 @@
       .comment-section {
         max-width: 75ch;
         margin: auto;
-        margin-top: 1rem;
+        margin-top: -2.5rem;
+        margin-bottom: -0.3rem;
       }
       .comment {
         margin-bottom: 1rem;
@@ -132,6 +133,7 @@
       }
       .c-text {
         grid-area: comment;
+        font-size: 5px;
         width: 100%;
       }
       .c-user {
@@ -248,6 +250,91 @@
         display: flex;
       }
 
+      /* Pagination Styles - Updated for arrow icons and proper width */
+      .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin: 0.9rem auto 2rem auto;
+        padding: 0 1rem;
+        width: 100%;
+        max-width: 75ch;
+      }
+
+      .pagination {
+        display: inline-block;
+        background: var(--White);
+        padding: 0.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        max-width: 75ch;
+        width: auto;
+      }
+
+      .pagination ul {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        gap: 0.25rem;
+        margin: 0;
+        padding: 0;
+      }
+
+      .pagination ul li {
+        color: var(--Primary);
+        line-height: 2.5rem;
+        text-align: center;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.2s ease;
+        border-radius: 4px;
+      }
+
+      .pagination ul li.numb {
+        height: 2.5rem;
+        min-width: 2.5rem;
+        padding: 0 0.5rem;
+        line-height: 2.5rem;
+      }
+
+      .pagination ul li.dots {
+        font-size: 1.1rem;
+        cursor: default;
+        color: var(--Grayish-Blue);
+        height: 2.5rem;
+        min-width: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .pagination ul li.btn {
+        height: 2.5rem;
+        min-width: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+
+      .pagination ul li.btn svg {
+        width: 0.75rem;
+        height: 0.75rem;
+        fill: currentColor;
+      }
+
+      .pagination li.active,
+      .pagination ul li.numb:hover,
+      .pagination ul li.btn:hover {
+        color: var(--White);
+        background-color: var(--Primary);
+      }
+
+      .pagination li.active {
+        font-weight: 600;
+      }
+
       @media screen and (max-width: 640px) {
         .container {
           padding: 0.75rem;
@@ -284,55 +371,48 @@
           padding: 0.5rem;
           align-self: stretch;
         }
-      }
 
-      .modal-wrp {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(0, 0, 0, 0.3);
-      }
+        /* Mobile pagination adjustments */
+        .pagination-container {
+          margin: 1.5rem auto;
+        }
 
-      .modal {
-        padding: 1.5rem;
-        max-width: 32ch;
-        display: grid;
-        gap: 1rem;
-        grid-template-areas: "heading heading" "body body" "no yes";
-      }
+        .pagination {
+          max-width: calc(100vw - 2rem);
+          overflow-x: auto;
+          padding: 0.375rem;
+        }
 
-      .invisible {
-        display: none;
-      }
+        .pagination ul {
+          flex-wrap: nowrap;
+          gap: 0.125rem;
+        }
 
-      .modal h3 {
-        grid-area: heading;
-        color: var(--Dark-blue);
-      }
-      .modal button {
-        color: var(--White);
-        padding: 0.75rem;
-        border-radius: 8px;
-        border: none;
-        font-weight: 500;
-      }
-      .modal p {
-        grid-area: body;
-        color: var(--Grayish-Blue);
-        line-height: 1.5;
-      }
-      .modal .yes {
-        grid-area: yes;
-        background-color: var(--Soft-Red);
-      }
-      .modal .no {
-        background-color: var(--Grayish-Blue);
-        grid-area: no;
+        .pagination ul li {
+          font-size: 0.9rem;
+          line-height: 2.25rem;
+        }
+
+        .pagination ul li.numb {
+          height: 2.25rem;
+          min-width: 2.25rem;
+          line-height: 2.25rem;
+        }
+
+        .pagination ul li.btn {
+          height: 2.25rem;
+          min-width: 2.25rem;
+        }
+
+        .pagination ul li.btn svg {
+          width: 0.65rem;
+          height: 0.65rem;
+        }
+
+        .pagination ul li.dots {
+          height: 2.25rem;
+          min-width: 2.25rem;
+        }
       }
 
       /* SHOW MORE button styling */
@@ -401,6 +481,14 @@
         .reply-actions {
           flex-direction: row;
           justify-content: flex-end;
+        }
+        .pagination-container {
+          /* display: flex;
+          justify-content: center; */
+          margin: 0.9rem auto 2rem auto;
+          /* padding: 0 1rem;
+          width: 100%;
+          max-width: 75ch; */
         }
         .reply-actions button {
           flex: 1;
@@ -487,10 +575,21 @@
       </div>
     </template>
 
+    <!-- Pagination template -->
+    <template class="pagination-template">
+      <div class="pagination-container">
+        <div class="pagination">
+          <ul></ul>
+        </div>
+      </div>
+    </template>
+
     <main>
       <div class="comment-section">
         <div class="comments-wrp"></div>
 
+        <!-- Pagination will be inserted here -->
+        
         <!-- main bottom input (unchanged, no cancel) -->
         <div class="reply-input container">
           <img src="images/avatars/anonymous.png" alt="" class="usr-img" />
@@ -498,36 +597,16 @@
           <button class="bu-primary">SEND</button>
         </div>
       </div>
-
-      <div class="modal-wrp invisible">
-        <div class="modal container">
-          <h3>Delete comment</h3>
-          <p>Are you sure you want to delete this comment? This will remove the comment and cant be undone</p>
-          <button class="yes">YES,DELETE</button>
-          <button class="no">NO,CANCEL</button>
-        </div>
-      </div>
     </main>
 
     <!-- external comment data (unchanged) -->
     <script src="reviews.js"></script>
 
-    <!-- color-derivation + app JS (app logic kept unchanged apart from new color code) -->
+    <!-- color-derivation + app JS (with top-level shuffle added) -->
     <script>
       /*******************************
-       * Color utilities & derivation
-       *
-       * Behavior:
-       * - Reads --Primary (HEX) from :root
-       * - Converts to HSL, computes derived HSL variants:
-       *   --Light-grayish-blue  => lighter, a bit more saturated, high lightness
-       *   --Dark-blue           => darker, less saturated
-       *   --Grayish-Blue        => low saturation neutral tone
-       * - Writes back CSS variables in HEX and a Primary RGB triplet (--Primary-rgb)
-       *
-       * Changing --Primary in CSS and reloading the page will update derived colors.
+       * Color utilities & derivation (unchanged)
        *******************************/
-
       function hexToRgb(hex) {
         if (!hex) return null;
         hex = hex.replace('#','').trim();
@@ -549,7 +628,6 @@
         }).join('');
       }
 
-      // RGB [0..255] -> HSL {h in degrees [0..360), s,l in [0..1]}
       function rgbToHsl(r,g,b) {
         r /= 255; g /= 255; b /= 255;
         const max = Math.max(r,g,b), min = Math.min(r,g,b);
@@ -567,7 +645,6 @@
         return { h, s, l };
       }
 
-      // H in degrees, s,l in [0..1] -> rgb [0..255]
       function hslToRgb(h, s, l) {
         h = ((h % 360) + 360) % 360;
         if (s === 0) {
@@ -599,29 +676,25 @@
         const rgb = hexToRgb(primaryHex);
         if (!rgb) return;
         const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-        const h = hsl.h; // degrees
+        const h = hsl.h;
         const s = hsl.s;
         const l = hsl.l;
 
-        // Light grayish blue: lighter and slightly more saturated
         const lightS = clamp01(s * 1.425);
         const lightL = Math.min(0.95, l + 0.33);
         const lightRgb = hslToRgb(h, lightS, lightL);
         const lightHex = rgbToHex(lightRgb.r, lightRgb.g, lightRgb.b);
 
-        // Dark blue: darker and less saturated
         const darkS = clamp01(s * 0.6);
-        const darkL = Math.max(0.06, l * 0.45); // ensure visible contrast
+        const darkL = Math.max(0.06, l * 0.45);
         const darkRgb = hslToRgb(h, darkS, darkL);
         const darkHex = rgbToHex(darkRgb.r, darkRgb.g, darkRgb.b);
 
-        // Grayish blue: low saturation neutral tone around mid-dark lightness
         const grayS = clamp01(s * 0.25);
         const grayL = 0.45;
         const grayRgb = hslToRgb(h, grayS, grayL);
         const grayHex = rgbToHex(grayRgb.r, grayRgb.g, grayRgb.b);
 
-        // Primary rgb triplet for subtle shadows
         const primaryRgbTriplet = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
 
         return {
@@ -632,7 +705,6 @@
         };
       }
 
-      // apply computed colors to CSS variables
       function applyDerivedColors() {
         const root = getComputedStyle(document.documentElement);
         const primaryHex = root.getPropertyValue('--Primary').trim() || '#5457b6';
@@ -644,13 +716,164 @@
         document.documentElement.style.setProperty('--Primary-rgb', derived.primaryRgbTriplet);
       }
 
-      // run derivation on DOM ready
       document.addEventListener('DOMContentLoaded', () => {
         applyDerivedColors();
       });
 
       /*******************************
-       * --- application JS (unchanged original logic) ---
+       * Small helper: Fisher–Yates shuffle (mutates array)
+       *******************************/
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const tmp = arr[i];
+          arr[i] = arr[j];
+          arr[j] = tmp;
+        }
+        return arr;
+      }
+
+      /*******************************
+       * Configuration Settings
+       *******************************/
+      let shuffleOnLoad = true; // Set to false to disable shuffling on page load
+      let hasShuffled = false; // Track if shuffling has occurred
+
+      /*******************************
+       * Pagination state and functions
+       *******************************/
+      let currentPage = 1;
+      const commentsPerPage = 5;
+
+      function getTotalPages() {
+        // Only count top-level comments for pagination
+        const topLevelComments = data.comments.filter(comment => comment.parent === 0);
+        return Math.max(1, Math.ceil(topLevelComments.length / commentsPerPage));
+      }
+
+      function getCurrentPageComments() {
+        // Get only top-level comments for pagination
+        const topLevelComments = data.comments.filter(comment => comment.parent === 0);
+        
+        // Create a copy to avoid modifying the original array unnecessarily
+        const topLevelCommentsCopy = [...topLevelComments];
+        
+        // Shuffle only on first page load if shuffleOnLoad is true and hasn't shuffled yet
+        // Also, ONLY shuffle on initial page load, not when adding/replying comments
+        if (currentPage === 1 && shuffleOnLoad && !hasShuffled) {
+          shuffleArray(topLevelCommentsCopy);
+          hasShuffled = true; // Mark as shuffled so it doesn't shuffle again
+        }
+        
+        // Calculate slice for current page
+        const startIndex = (currentPage - 1) * commentsPerPage;
+        const endIndex = startIndex + commentsPerPage;
+        return topLevelCommentsCopy.slice(startIndex, endIndex);
+      }
+
+      function createPagination(totalPages, page) {
+        let liTag = '';
+        let active;
+        let beforePage = page - 1;
+        let afterPage = page + 1;
+        
+        // Previous button with arrow icon
+        if (page > 1) {
+          liTag += `<li class="btn prev" onclick="changePage(${page - 1})" title="Previous page">
+            <svg width="11" height="14" viewBox="0 0 11 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+              <path d="M9.5 14L0.5 7L9.5 0L9.5 14Z" fill="currentColor"/>
+            </svg>
+          </li>`;
+        }
+        
+        // First page and ellipsis
+        if (page > 2) {
+          liTag += `<li class="first numb" onclick="changePage(1)"><span>1</span></li>`;
+          if (page > 3) {
+            liTag += `<li class="dots"><span>...</span></li>`;
+          }
+        }
+        
+        // Adjust beforePage and afterPage for edge cases
+        if (page === totalPages) {
+          beforePage = beforePage - 2;
+        } else if (page === totalPages - 1) {
+          beforePage = beforePage - 1;
+        }
+        
+        if (page === 1) {
+          afterPage = afterPage + 2;
+        } else if (page === 2) {
+          afterPage = afterPage + 1;
+        }
+        
+        // Page numbers
+        for (let plength = beforePage; plength <= afterPage; plength++) {
+          if (plength > totalPages) continue;
+          if (plength <= 0) plength = 1;
+          
+          active = (page === plength) ? "active" : "";
+          liTag += `<li class="numb ${active}" onclick="changePage(${plength})"><span>${plength}</span></li>`;
+        }
+        
+        // Last page and ellipsis
+        if (page < totalPages - 1) {
+          if (page < totalPages - 2) {
+            liTag += `<li class="dots"><span>...</span></li>`;
+          }
+          liTag += `<li class="last numb" onclick="changePage(${totalPages})"><span>${totalPages}</span></li>`;
+        }
+        
+        // Next button with arrow icon
+        if (page < totalPages) {
+          liTag += `<li class="btn next" onclick="changePage(${page + 1})" title="Next page">
+            <svg width="11" height="14" viewBox="0 0 11 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+              <path d="M1.5 0L10.5 7L1.5 14L1.5 0Z" fill="currentColor"/>
+            </svg>
+          </li>`;
+        }
+        
+        return liTag;
+      }
+
+      function renderPagination() {
+        const totalPages = getTotalPages();
+        
+        // Remove existing pagination
+        const existingPagination = document.querySelector('.pagination-container');
+        if (existingPagination) {
+          existingPagination.remove();
+        }
+        
+        // Don't render pagination if only 1 page
+        if (totalPages <= 1) return;
+        
+        // Create and insert pagination
+        const paginationTemplate = document.querySelector('.pagination-template');
+        const paginationNode = paginationTemplate.content.cloneNode(true);
+        const paginationContainer = paginationNode.querySelector('.pagination-container');
+        const paginationList = paginationNode.querySelector('.pagination ul');
+        
+        // Insert pagination before the bottom input
+        const commentSection = document.querySelector('.comment-section');
+        const bottomInput = document.querySelector('.reply-input.container');
+        commentSection.insertBefore(paginationContainer, bottomInput);
+        
+        // Generate pagination HTML
+        paginationList.innerHTML = createPagination(totalPages, currentPage);
+      }
+
+      function changePage(newPage) {
+        if (newPage < 1 || newPage > getTotalPages()) return;
+        currentPage = newPage;
+        initComments();
+        renderPagination();
+        // Scroll to top of comments section for better UX
+        document.querySelector('.comment-section').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      /*******************************
+       * --- application JS (updated for pagination)
        *******************************/
 
       function appendFrag(frag, parent) {
@@ -659,8 +882,7 @@
         return children[1];
       }
 
-      // maximum characters before truncation
-      const MAX_COMMENT_CHARS = 200;
+      const MAX_COMMENT_CHARS = 180;
 
       function renderCommentBody(cBodyElem, fullText) {
         cBodyElem.innerHTML = "";
@@ -718,7 +940,17 @@
           user: data.currentUser,
         };
         commentParent.push(newComment);
+        
+        // When adding a top-level comment, go to last page to see it
+        if (parentId === 0) {
+          const totalPages = getTotalPages();
+          currentPage = totalPages;
+        }
+        
+        // Ensure shuffling does NOT occur when adding comments
+        // We're already preventing this with hasShuffled flag and shuffleOnLoad conditions
         initComments();
+        renderPagination();
       };
 
       const deleteComment = (commentObject) => {
@@ -730,27 +962,15 @@
               .filter((e) => e.id === commentObject.parent)[0]
               .replies.filter((e) => e != commentObject);
         }
+        
+        // If we deleted the last comment on the current page, go to previous page
+        const currentPageComments = getCurrentPageComments();
+        if (currentPageComments.length === 0 && currentPage > 1) {
+          currentPage--;
+        }
+        
         initComments();
-      };
-
-      const promptDel = (commentObject) => {
-        const modalWrp = document.querySelector(".modal-wrp");
-        modalWrp.classList.remove("invisible");
-        const yesBtn = modalWrp.querySelector(".yes");
-        const noBtn = modalWrp.querySelector(".no");
-
-        const yesClone = yesBtn.cloneNode(true);
-        yesBtn.parentNode.replaceChild(yesClone, yesBtn);
-        const noClone = noBtn.cloneNode(true);
-        noBtn.parentNode.replaceChild(noClone, noBtn);
-
-        modalWrp.querySelector(".yes").addEventListener("click", () => {
-          deleteComment(commentObject);
-          modalWrp.classList.add("invisible");
-        });
-        modalWrp.querySelector(".no").addEventListener("click", () => {
-          modalWrp.classList.add("invisible");
-        });
+        renderPagination();
       };
 
       const spawnReplyInput = (parent, parentId, replyTo = undefined) => {
@@ -768,6 +988,7 @@
           let commentBody = addedInput.querySelector(".cmnt-input").value;
           if (commentBody.length == 0) return;
           addComment(commentBody, parentId, replyTo);
+          addedInput.remove();
         });
 
         const cancelBtn = addedInput.querySelector(".bu-cancel");
@@ -813,15 +1034,15 @@
           });
         if (commentObject.user.username == data.currentUser.username) {
           commentNode.querySelector(".comment").classList.add("this-user");
-          commentNode.querySelector(".delete").addEventListener("click", () => {
-            promptDel(commentObject);
+
+          // DELETE IMMEDIATELY without confirmation modal
+          commentNode.querySelector(".delete").addEventListener("click", (e) => {
+            e.preventDefault();
+            deleteComment(commentObject);
           });
 
-          const editLink = commentNode.querySelector(".edit");
-          const editLabel = editLink.querySelector(".edit-label");
-
-          editLink.addEventListener("click", (e) => {
-            e.preventDefault();
+          commentNode.querySelector(".edit").addEventListener("click", (e) => {
+            const editLabel = commentNode.querySelector(".edit-label");
             const wrapper = e.target.closest(".comment-wrp");
             if (!wrapper) return;
             const textSpan = wrapper.querySelector(".c-body-text");
@@ -866,29 +1087,63 @@
         });
       };
 
-      function initComments(
-        commentList = data.comments,
-        parent = document.querySelector(".comments-wrp")
-      ) {
+      /**
+       * initComments
+       * - Renders only 5 top-level comments per page (based on currentPage)
+       * - Replies are always shown with their parent comment
+       * - Shuffle only applies on initial page load when shuffleOnLoad is true
+       * - NEVER shuffles when adding/replying to comments
+       */
+      function initComments() {
+        const parent = document.querySelector(".comments-wrp");
+        parent.innerHTML = "";
+        
+        // Get current page comments (top-level only, 5 per page)
+        const pageComments = getCurrentPageComments();
+        
+        // Render each top-level comment and its replies
+        pageComments.forEach((element) => {
+          var parentId = element.parent == 0 ? element.id : element.parent;
+          const comment_node = createCommentNode(element);
+          
+          // Always render replies if they exist
+          if (element.replies && element.replies.length > 0) {
+            initCommentsForReplies(element.replies, comment_node.querySelector(".replies"));
+          }
+          
+          appendComment(parent, comment_node, parentId);
+        });
+        
+        // Render pagination controls
+        renderPagination();
+      }
+
+      /**
+       * Helper function to render replies (separate from main initComments)
+       * This ensures replies are always rendered with their parent
+       */
+      function initCommentsForReplies(commentList, parent) {
         parent.innerHTML = "";
         commentList.forEach((element) => {
           var parentId = element.parent == 0 ? element.id : element.parent;
           const comment_node = createCommentNode(element);
+          
+          // Recursively render nested replies
           if (element.replies && element.replies.length > 0) {
-            initComments(element.replies, comment_node.querySelector(".replies"));
+            initCommentsForReplies(element.replies, comment_node.querySelector(".replies"));
           }
+          
           appendComment(parent, comment_node, parentId);
         });
       }
 
+      // Make sure derived colors are applied and then render (DOMContentLoaded)
       document.addEventListener('DOMContentLoaded', () => {
-        // ensure derived colors are applied before rendering comments
         applyDerivedColors();
         initComments();
       });
 
-      // main bottom input send behavior
-      // (note: query until DOMContentLoaded ensures node exists)
+      // MAIN bottom input send behavior (updated for pagination)
       document.addEventListener('DOMContentLoaded', () => {
         const cmntInput = document.querySelector(".reply-input");
         if (cmntInput) {
@@ -904,6 +1159,7 @@
         }
       });
     </script>
+
     <script>
       function sendHeightToParent() {
         const doc = document.documentElement;
@@ -947,5 +1203,5 @@
         // sendHeightToParent(); // ResizeObserver / MutationObserver will pick this up
       }, 2000);
     </script>
-</body>
+  </body>
 </html>
